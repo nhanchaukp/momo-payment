@@ -3,8 +3,8 @@
 namespace NhanChauKP\MomoPayment\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use NhanChauKP\MomoPayment\MomoPaymentServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
