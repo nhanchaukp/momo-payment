@@ -1,13 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace NhanChauKP\MomoPayment;
 
+use NhanChauKP\MomoPayment\Commands\MomoPaymentCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class MomoPaymentServiceProvider extends PackageServiceProvider
 {
+    public function boot(): void {}
+
     public function configurePackage(Package $package): void
     {
         /*
@@ -16,10 +18,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('momo-payment')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_migration_table_name_table')
-            ->hasCommand(SkeletonCommand::class);
+//            ->hasViews()
+//            ->hasMigration('create_momo_payment_table')
+            ->hasCommand(MomoPaymentCommand::class);
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace NhanChauKP\MomoPayment\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class MomoPaymentCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'momo-payment';
 
     public $description = 'My command';
 
