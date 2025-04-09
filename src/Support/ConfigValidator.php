@@ -6,18 +6,33 @@ use RuntimeException;
 
 class ConfigValidator
 {
-    public static function validate(): void
+    public static function validate(?array $config = null): void
     {
         $required = [
-            'momo.partner_code' => 'Partner Code',
-            'momo.access_key' => 'Access Key',
-            'momo.secret_key' => 'Secret Key',
+            'partner_code' => 'Partner Code',
+            'access_key' => 'Access Key',
+            'secret_key' => 'Secret Key',
         ];
 
-        foreach ($required as $key => $label) {
-            if (empty(config($key))) {
-                throw new RuntimeException("Missing config: {$label} ({$key})");
+        if ($config === null) {
+            // Validate Laravel config
+            foreach ($required as $key => $label) {
+                if (empty(config("momo-payment.{$key}"))) {
+                    throw new RuntimeException("Missing config: {$label} (momo-payment.{$key})");
+                }
+            }
+        } else {
+            // Validate array config
+            foreach ($required as $key => $label) {
+                if (empty($config[$key])) {
+                    throw new RuntimeException("Missing config: {$label} ({$key})");
+                }
             }
         }
+    }
+
+    public static function getConfig(): array
+    {
+        return config('momo-payment');
     }
 }

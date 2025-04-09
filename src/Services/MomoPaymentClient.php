@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use NhanChauKP\MomoPayment\Constants\ErrorCodes;
 use NhanChauKP\MomoPayment\Contracts\DatableRequest;
 use NhanChauKP\MomoPayment\Exceptions\MomoException;
+use NhanChauKP\MomoPayment\Support\ConfigValidator;
 use Spatie\LaravelData\Data;
 
 class MomoPaymentClient
@@ -26,15 +27,18 @@ class MomoPaymentClient
 
     protected bool $throw_error;
 
-    public function __construct(array $config)
+    public function __construct()
     {
+        ConfigValidator::validate();
+        $config = ConfigValidator::getConfig();
+
         $this->baseUrl = $config['base_url'];
         $this->accessKey = $config['access_key'];
         $this->partnerCode = $config['partner_code'];
         $this->secretKey = $config['secret_key'];
-        $this->timeout = $config['timeout'] ?? 30;
-        $this->debug = $config['debug'] ?? false;
-        $this->throw_error = $config['throw_error'] ?? true;
+        $this->timeout = $config['timeout'];
+        $this->debug = $config['debug'];
+        $this->throw_error = $config['throw_error'];
     }
 
     /**
@@ -45,8 +49,8 @@ class MomoPaymentClient
     {
         if ($payload instanceof DatableRequest) {
             $signature = $payload->generateSignature(
-                config('momo.access_key'),
-                config('momo.secret_key'),
+                $this->accessKey,
+                $this->secretKey,
             );
 
             $payload = $payload->withSignature($signature);

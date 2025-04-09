@@ -3,48 +3,41 @@
 namespace NhanChauKP\MomoPayment;
 
 use Illuminate\Http\Client\ConnectionException;
-use NhanChauKP\MomoPayment\Request\QueryRequest;
-use NhanChauKP\MomoPayment\Response\QueryResponse;
+use NhanChauKP\MomoPayment\Requests\ConfirmRequest;
+use NhanChauKP\MomoPayment\Requests\CreateRequest;
+use NhanChauKP\MomoPayment\Requests\QueryRequest;
+use NhanChauKP\MomoPayment\Responses\ConfirmResponse;
+use NhanChauKP\MomoPayment\Responses\CreateResponse;
+use NhanChauKP\MomoPayment\Responses\QueryResponse;
 use NhanChauKP\MomoPayment\Services\MomoPaymentClient;
 
 class MomoPayment
 {
-    public function __construct(protected MomoPaymentClient $client) {}
+    public function __construct(
+        protected MomoPaymentClient $client
+    ) {}
 
-    public function create(QueryRequest $data): QueryResponse
+    public function create(CreateRequest $data): CreateResponse
     {
-        $response = $this->client->post('/v2/gateway/api/query', $data->toArray());
+        $response = $this->client->post('/v2/gateway/api/query', $data);
 
-        return QueryResponse::from($response->json());
+        return CreateResponse::from($response);
     }
 
-    public function confirm(array $payload): array
+    public function confirm(ConfirmRequest $payload): ConfirmResponse
     {
-        return $this->sendRequest('/gw_payment/confirm', $payload);
+        $response = $this->client->post('/gw_payment/confirm', $payload);
+        return ConfirmResponse::from($response);
     }
 
-    public function query(array $payload): array
+    public function query(QueryRequest $payload): QueryResponse
     {
-        return $this->sendRequest('/query', $payload);
+        $response = $this->client->post('/query', $payload);
+        return QueryResponse::from($response);
     }
 
-    public function refund(array $payload): array
-    {
-        return $this->sendRequest('/gw_payment/refund', $payload);
-    }
-
-    /**
-     * @throws ConnectionException
-     */
-    protected function sendRequest(string $endpoint, array $payload): array
-    {
-        $data = array_merge($payload, [
-            'partnerCode' => config('momo.partner_code'),
-            'accessKey' => config('momo.access_key'),
-            'secretKey' => config('momo.secret_key'),
-            // 'signature' => $this->generateSignature($payload),
-        ]);
-
-        return MomoPaymentClient::post($endpoint, $data)->json();
-    }
+    // public function refund(array $payload): array
+    // {
+    //     return $this->sendRequest('/gw_payment/refund', $payload);
+    // }
 }

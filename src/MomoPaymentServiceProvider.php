@@ -2,26 +2,28 @@
 
 namespace NhanChauKP\MomoPayment;
 
-use NhanChauKP\MomoPayment\Commands\MomoPaymentCommand;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use NhanChauKP\MomoPayment\Services\MomoPaymentClient;
 
-class MomoPaymentServiceProvider extends PackageServiceProvider
+class MomoPaymentServiceProvider extends ServiceProvider
 {
-    public function boot(): void {}
-
-    public function configurePackage(Package $package): void
+    public function register(): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
-        $package
-            ->name('momo-payment')
-            ->hasConfigFile()
-//            ->hasViews()
-//            ->hasMigration('create_momo_payment_table')
-            ->hasCommand(MomoPaymentCommand::class);
+        $this->app->singleton('momo-payment', function ($app) {
+            return new MomoPayment(
+                new MomoPaymentClient
+            );
+        });
+
+        $this->app->singleton(MomoPaymentClient::class, function ($app) {
+            return new MomoPaymentClient;
+        });
+    }
+
+    public function boot(): void
+    {
+        $this->publishes([
+            __DIR__.'/../config/momo-payment.php' => config_path('momo-payment.php'),
+        ], 'momo-payment-config');
     }
 }

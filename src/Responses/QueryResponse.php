@@ -1,6 +1,6 @@
 <?php
 
-namespace NhanChauKP\MomoPayment\Response;
+namespace NhanChauKP\MomoPayment\Responses;
 
 use Spatie\LaravelData\Data;
 

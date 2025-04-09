@@ -5,10 +5,10 @@ namespace NhanChauKP\MomoPayment\Traits;
 /**
  * @method signatureFields()
  * @method toArray()
- * @method static from(array $array)
  */
 trait HandlesSignature
 {
+
     public function signatureRaw(string $accessKey): string
     {
         $fields = $this->signatureFields();

@@ -1,6 +1,5 @@
 <?php
 
-// config for NhanChauKP/MomoPayment
 return [
     /**
      * Config can get in https://business.momo.vn/portal/app/payment-integration-center
