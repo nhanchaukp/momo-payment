@@ -3,6 +3,7 @@
 namespace NhanChauKP\MomoPayment;
 
 use Illuminate\Http\Client\ConnectionException;
+use NhanChauKP\MomoPayment\Exceptions\MomoException;
 use NhanChauKP\MomoPayment\Requests\ConfirmRequest;
 use NhanChauKP\MomoPayment\Requests\CreateRequest;
 use NhanChauKP\MomoPayment\Requests\QueryRequest;
@@ -17,6 +18,10 @@ class MomoPayment
         protected MomoPaymentClient $client
     ) {}
 
+    /**
+     * @throws MomoException
+     * @throws ConnectionException
+     */
     public function create(CreateRequest $data): CreateResponse
     {
         $response = $this->client->post('/v2/gateway/api/query', $data);
@@ -24,15 +29,25 @@ class MomoPayment
         return CreateResponse::from($response);
     }
 
+    /**
+     * @throws MomoException
+     * @throws ConnectionException
+     */
     public function confirm(ConfirmRequest $payload): ConfirmResponse
     {
         $response = $this->client->post('/gw_payment/confirm', $payload);
+
         return ConfirmResponse::from($response);
     }
 
+    /**
+     * @throws MomoException
+     * @throws ConnectionException
+     */
     public function query(QueryRequest $payload): QueryResponse
     {
         $response = $this->client->post('/query', $payload);
+
         return QueryResponse::from($response);
     }
 
