@@ -3,6 +3,7 @@
 namespace NhanChauKP\MomoPayment\Responses;
 
 use Spatie\LaravelData\Data;
+
 class CreateResponse extends Data
 {
     public function __construct(

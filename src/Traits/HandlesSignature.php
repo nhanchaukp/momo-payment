@@ -8,7 +8,6 @@ namespace NhanChauKP\MomoPayment\Traits;
  */
 trait HandlesSignature
 {
-
     public function signatureRaw(string $accessKey): string
     {
         $fields = $this->signatureFields();
